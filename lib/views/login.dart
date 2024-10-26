@@ -1,76 +1,102 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:get/get.dart';
-import 'package:login_signup_screens_responsive/controllers/UI.dart';
-import 'package:login_signup_screens_responsive/constants.dart';
 import 'package:lottie/lottie.dart';
+
 import 'package:login_signup_screens_responsive/constants.dart';
 
-class login extends StatefulWidget {
-  const login({super.key});
+import 'package:login_signup_screens_responsive/controllers/UI.dart';
+
+class LoginView extends StatefulWidget {
+  const LoginView({Key? key}) : super(key: key);
 
   @override
-  State<login> createState() => _loginState();
+  State<LoginView> createState() => _LoginViewState();
 }
 
-class _loginState extends State<login> {
-  TextEditingController emailContoroller = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+class _LoginViewState extends State<LoginView> {
   TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
-    emailContoroller.dispose();
-    passwordController.dispose();
     nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-
-    UIController uiController = Get.find<UIController>();
-
+    UIController simpleUIController = Get.find<UIController>();
     return GestureDetector(
-      onTap: () {},
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-          backgroundColor: Colors.white,
-          body: LayoutBuilder(
-            builder: (context, Constraints) {
-              if (size.width > 600) {
-                return buildLargeScreen(size, uiController);
-              } else {
-                return buildSmallScreen(size, uiController);
-              }
-            },
-          )),
+        backgroundColor: Colors.white,
+        resizeToAvoidBottomInset: false,
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            if (constraints.maxWidth > 600) {
+              return _buildLargeScreen(size, simpleUIController);
+            } else {
+              return _buildSmallScreen(size, simpleUIController);
+            }
+          },
+        ),
+      ),
     );
   }
 
-  Widget buildLargeScreen(Size size, UIController uiController) {
+  Widget _buildLargeScreen(
+    Size size,
+    UIController simpleUIController,
+  ) {
     return Row(
       children: [
         Expanded(
-            child: RotatedBox(
-          quarterTurns: 4,
-          child: Lottie.asset("assets/wave.json", fit: BoxFit.fill),
-        )),
-        SizedBox(
-          width: size.width * 0.06,
+          flex: 4,
+          child: RotatedBox(
+            quarterTurns: 3,
+            child: Lottie.asset(
+              'assets/coin.json',
+              height: size.height * 0.3,
+              width: double.infinity,
+              fit: BoxFit.fill,
+            ),
+          ),
         ),
-        Expanded(flex: 3, child: buildMainBody(size, uiController))
+        SizedBox(width: size.width * 0.06),
+        Expanded(
+          flex: 5,
+          child: _buildMainBody(
+            size,
+            simpleUIController,
+          ),
+        ),
       ],
     );
   }
 
-  Widget buildSmallScreen(Size size, UIController uiController) {
-    return Center(child: buildMainBody(size, uiController));
+  Widget _buildSmallScreen(
+    Size size,
+    UIController simpleUIController,
+  ) {
+    return Center(
+      child: _buildMainBody(
+        size,
+        simpleUIController,
+      ),
+    );
   }
 
-  Widget buildMainBody(Size size, UIController uiController) {
+  Widget _buildMainBody(
+    Size size,
+    UIController simpleUIController,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment:
@@ -78,86 +104,164 @@ class _loginState extends State<login> {
       children: [
         size.width > 600
             ? Container()
-            : Lottie.asset("assets/wave.json", fit: BoxFit.fill),
+            : Lottie.asset(
+                'assets/wave.json',
+                height: size.height * 0.2,
+                width: size.width,
+                fit: BoxFit.fill,
+              ),
         SizedBox(
           height: size.height * 0.03,
         ),
-        Text("Login", style: loginStyle(size)),
-        SizedBox(height: size.height * 0.02),
-        Text(
-          "Welcome back Catchy",
-          style: loginStyle(size),
+        Padding(
+          padding: const EdgeInsets.only(left: 20.0),
+          child: Text(
+            'Login',
+            style: kLoginTitleStyle(size),
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 20.0),
+          child: Text(
+            'Welcome Back Catchy',
+            style: kLoginSubtitleStyle(size),
+          ),
         ),
         SizedBox(
           height: size.height * 0.03,
         ),
         Padding(
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.only(left: 20.0, right: 20),
           child: Form(
+            key: _formKey,
             child: Column(
               children: [
                 TextFormField(
-                  decoration: InputDecoration(
-                    hintText: "email or gmail",
+                  style: kTextFormFieldStyle(),
+                  decoration: const InputDecoration(
                     prefixIcon: Icon(Icons.person),
+                    hintText: 'Username or Gmail',
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20)),
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                    ),
                   ),
                   controller: nameController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "plz enter username";
+                      return 'Please enter username';
                     } else if (value.length < 4) {
-                      return "at elast 4 characters";
-                    } else if (value.length > 14) {
-                      return "maxixum length 10";
+                      return 'at least enter 4 characters';
+                    } else if (value.length > 13) {
+                      return 'maximum character is 13';
                     }
                     return null;
                   },
                 ),
                 SizedBox(
+                  height: size.height * 0.02,
+                ),
+                Obx(
+                  () => TextFormField(
+                    style: kTextFormFieldStyle(),
+                    controller: passwordController,
+                    obscureText: simpleUIController.isObsucre.value,
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.lock_open),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          simpleUIController.isObsucre.value
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                        ),
+                        onPressed: () {
+                          simpleUIController.isObsucreActive();
+                        },
+                      ),
+                      hintText: 'Password',
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter some text';
+                      } else if (value.length < 7) {
+                        return 'at least enter 6 characters';
+                      } else if (value.length > 13) {
+                        return 'maximum character is 13';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.01,
+                ),
+                Text(
+                  'Creating an account means you\'re okay with our Terms of Services and our Privacy Policy',
+                  style: kLoginTermsAndPrivacyStyle(size),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(
+                  height: size.height * 0.02,
+                ),
+                loginButton(),
+                SizedBox(
                   height: size.height * 0.03,
                 ),
-                Obx(() => TextFormField(
-                      controller: passwordController,
-                      obscureText: uiController.isObsucre.value,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.lock_clock),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            uiController.isObsucre.value
-                                ? Icons.visibility
-                                : Icons.visibility_off,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                    nameController.clear();
+                    emailController.clear();
+                    passwordController.clear();
+                    _formKey.currentState?.reset();
+                    simpleUIController.isObsucre.value = true;
+                  },
+                  child: RichText(
+                    text: TextSpan(
+                      text: 'Don\'t have an account?',
+                      style: kHaveAnAccountStyle(size),
+                      children: [
+                        TextSpan(
+                          text: " Sign up",
+                          style: kLoginOrSignUpTextStyle(
+                            size,
                           ),
-                          onPressed: () {
-                            uiController.isObsucreActive();
-                          },
                         ),
-                        hintText: "Password",
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "plz enter some text";
-                        } else if (value.length < 7) {
-                          return "minimum lenfth is 7";
-                        } else if (value.length > 16) {
-                          return "maximum lenth is 17";
-                        }
-                        return null;  
-                      },
-                    )) ,
-
-                    SizedBox(height: size.height*0.01,),
-
-
-                    
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
-        )
+        ),
       ],
+    );
+  }
+
+  Widget loginButton() {
+    return SizedBox(
+      width: double.infinity,
+      height: 55,
+      child: ElevatedButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(Colors.deepPurpleAccent),
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+          ),
+        ),
+        onPressed: () {
+          if (_formKey.currentState!.validate()) {}
+        },
+        child: const Text('Login'),
+      ),
     );
   }
 }
