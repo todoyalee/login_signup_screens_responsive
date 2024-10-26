@@ -36,7 +36,7 @@ class _LoginViewState extends State<LoginView> {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.grey[300],
         resizeToAvoidBottomInset: false,
         body: LayoutBuilder(
           builder: (context, constraints) {
@@ -62,7 +62,7 @@ class _LoginViewState extends State<LoginView> {
           child: RotatedBox(
             quarterTurns: 3,
             child: Lottie.asset(
-              'assets/coin.json',
+              'assets/ghost.json',
               height: size.height * 0.3,
               width: double.infinity,
               fit: BoxFit.fill,
@@ -105,7 +105,7 @@ class _LoginViewState extends State<LoginView> {
         size.width > 600
             ? Container()
             : Lottie.asset(
-                'assets/wave.json',
+                'assets/nightScare.json',
                 height: size.height * 0.2,
                 width: size.width,
                 fit: BoxFit.fill,
@@ -250,7 +250,7 @@ class _LoginViewState extends State<LoginView> {
       height: 55,
       child: ElevatedButton(
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Colors.deepPurpleAccent),
+          backgroundColor: MaterialStateProperty.all(Colors.lightBlue),
           shape: MaterialStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
@@ -260,7 +260,10 @@ class _LoginViewState extends State<LoginView> {
         onPressed: () {
           if (_formKey.currentState!.validate()) {}
         },
-        child: const Text('Login'),
+        child: const Text(
+          'Login',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
     );
   }
