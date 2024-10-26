@@ -40,7 +40,7 @@ class _SignUpViewState extends State<SignUpView> {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.grey[300],
           resizeToAvoidBottomInset: false,
           body: LayoutBuilder(
             builder: (context, constraints) {
@@ -63,7 +63,7 @@ class _SignUpViewState extends State<SignUpView> {
           child: RotatedBox(
             quarterTurns: 3,
             child: Lottie.asset(
-              'assets/coin.json',
+              'assets/ghost.json',
               height: size.height * 0.3,
               width: double.infinity,
               fit: BoxFit.fill,
@@ -96,7 +96,7 @@ class _SignUpViewState extends State<SignUpView> {
         size.width > 600
             ? Container()
             : Lottie.asset(
-                'assets/wave.json',
+                'assets/nightScare.json',
                 height: size.height * 0.2,
                 width: size.width,
                 fit: BoxFit.fill,
@@ -264,7 +264,7 @@ class _SignUpViewState extends State<SignUpView> {
       height: 55,
       child: ElevatedButton(
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(Colors.deepPurpleAccent),
+          backgroundColor: MaterialStateProperty.all(Colors.lightBlue),
           shape: MaterialStateProperty.all(
             RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15),
@@ -274,7 +274,10 @@ class _SignUpViewState extends State<SignUpView> {
         onPressed: () {
           if (_formKey.currentState!.validate()) {}
         },
-        child: const Text('Sign up'),
+        child: const Text(
+          'Sign up',
+          style: TextStyle(color: Colors.white),
+        ),
       ),
     );
   }
