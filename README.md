@@ -1,16 +1,4 @@
-# login_signup_screens_responsive
+![Screenshot 2024-10-26 232113](https://github.com/user-attachments/assets/aaaceed9-3608-4a73-8b3d-1ebb96115aeb)
 
-A new Flutter project.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![Screenshot 2024-10-26 232130](https://github.com/user-attachments/assets/9a4c5a1e-2c32-490b-850f-d4563c35f94b)
